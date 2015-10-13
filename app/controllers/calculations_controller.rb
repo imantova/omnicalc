@@ -92,10 +92,10 @@ class CalculationsController < ApplicationController
 
     @range = @numbers.sort.last - @numbers.sort.first
 
-    @median = if @numbers.count % 2 != 0
-                 ((@numbers.sort.length + 1) / 2)
-              else (((@numbers.sort.length / 2) + ((@numbers.sort.length + 2) / 2)) / 2)
-              end
+    if @count.even? == true
+            @median =  (@sorted_numbers[(@count/2)-1] + @sorted_numbers[@count/2]) / 2
+        else @median = @sorted_numbers[@count/2]
+    end
 
     @sum = @numbers.sum
 
