@@ -17,7 +17,7 @@ class CalculationsController < ApplicationController
 
     @word_count = @text.split.count
 
-    @occurrences = @text.downcase.split.count(@special_word.downcase)
+    @occurrences = @text.gsub(/[!?@,.'":;()*&^%$#]/, "").downcase.split.count(@special_word.downcase)
 
     # ================================================================================
     # Your code goes above.
@@ -101,11 +101,14 @@ class CalculationsController < ApplicationController
 
     @mean = @numbers.sum / @numbers.length
 
-    @variance = "Replace this string with your answer."
+    @variance = @numbers.inject(0){|accum, i| accum +(i- @mean) ** 2 } / @count
 
-    @standard_deviation = "Replace this string with your answer."
+    @standard_deviation = @variance ** 0.5
 
-    @mode = "Replace this string with your answer."
+    frequencies = @numbers.inject(Hash.new(0)) { |h,v| h[v] += 1; h }
+
+    @mode = @numbers.max_by { |v| frequencies[v] }
+
 
     # ================================================================================
     # Your code goes above.
@@ -114,3 +117,4 @@ class CalculationsController < ApplicationController
     render("descriptive_statistics.html.erb")
   end
 end
+
